@@ -14,6 +14,4 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "client", "build")));
 app.use("/weather", weatherRouter);
 
-app.listen(5001, function() {
-  console.log("Listening on port 5001. http://localhost:5001");
-});
+app.listen(process.env.PORT || 5001);

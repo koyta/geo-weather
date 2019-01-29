@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "node ./scripts/start.js && cd client && npm start",
+    "start": "node ./scripts/start.js",
     "dev": "concurrently --kill-others-on-fail \"npm run start:server\" \"npm run start:client\"",
     "server": "nodemon ./scripts/start",
     "client": "cd client && npm start",
