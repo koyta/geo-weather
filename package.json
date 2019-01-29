@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node ./scripts/start.js",
-    "dev": "concurrently --kill-others-on-fail \"npm run start:server\" \"npm run start:client\"",
+    "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
     "server": "nodemon ./scripts/start",
     "client": "cd client && npm start",
     "postinstall": "npm install --prefix client",
