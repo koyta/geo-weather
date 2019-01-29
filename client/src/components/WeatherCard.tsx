@@ -2,6 +2,10 @@ import * as React from "react";
 import { styled } from "../theme";
 import { format, parse } from "date-fns";
 import WeatherIcon from "./WeatherIcon";
+import { convertMphToKmh } from "../utils/functions";
+import WeatherMaxTemp from "./WeatherMaxTemp";
+import WeatherMinTemp from "./WeatherMinTemp";
+import WeatherWind from "./WeatherWind";
 
 export const Card = styled.article`
   display: flex;
@@ -32,7 +36,7 @@ export const Card = styled.article`
 export const Date = styled.time`
   display: block;
   font-size: 16px;
-  flex-basis: 20%;
+  flex-basis: 15%;
   font-weight: 300;
 
   @media (min-width: 768px) {
@@ -44,7 +48,8 @@ export const StateName = styled.h3`
   margin: 0;
   font-weight: 300;
   font-size: 14px;
-  flex-basis: 35%;
+  flex-basis: 25%;
+  text-align: center;
 
   @media (min-width: 768px) {
     flex-basis: auto;
@@ -54,13 +59,21 @@ export const StateName = styled.h3`
 export const Temperature = styled.div`
   display: inline-flex;
   flex-direction: column;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 300;
-  flex-basis: 25%;
+  flex-basis: 20%;
 
   @media (min-width: 768px) {
     flex-basis: auto;
   }
+`;
+
+const Wind = styled.div`
+  display: inline-flex;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+  font-size: 14px;
 `;
 
 interface WeatherCardProps {
@@ -77,10 +90,13 @@ class WeatherCard extends React.PureComponent<WeatherCardProps, {}> {
         <Date dateTime={weather.applicable_date}>{formattedDate}</Date>
         <StateName>{weather.weather_state_name}</StateName>
         <Temperature>
-          <span>↑ {weather.max_temp.toFixed(0)} °C</span>
-          <span>↓ {weather.min_temp.toFixed(0)} °C</span>
+          <WeatherMaxTemp weather={weather} />
+          <WeatherMinTemp weather={weather} />
         </Temperature>
-        <WeatherIcon weather={weather} />
+        <WeatherIcon weather={weather} size={24} />
+        <Wind>
+          <WeatherWind weather={weather} />
+        </Wind>
       </Card>
     );
   }

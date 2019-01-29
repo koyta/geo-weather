@@ -22,7 +22,7 @@ class WeatherCurrentTemp extends React.Component<WeatherCurrentTempProps, {}> {
     const { weather } = this.props.weatherStore!;
     if (!weather) return null;
     const currentWeather = weather.consolidated_weather[0];
-    return <Temperature>{currentWeather.the_temp.toFixed(1)} °C</Temperature>;
+    return <Temperature>{currentWeather.the_temp.toFixed(1)}&nbsp;°C</Temperature>;
   }
 }
 

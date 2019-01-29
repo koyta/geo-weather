@@ -1,9 +1,14 @@
 import * as React from "react";
-import { styled, theme } from "../theme";
 import { inject, observer } from "mobx-react";
-import WeatherStore from "../stores/WeatherStore";
 import { parse, format } from "date-fns";
+
+import WeatherStore from "../stores/WeatherStore";
+import { styled } from "../theme";
+
 import WeatherCurrentTemp from "./WeatherCurrentTemp";
+import WeatherMaxTemp from "./WeatherMaxTemp";
+import WeatherMinTemp from "./WeatherMinTemp";
+import WeatherWind from "./WeatherWind";
 
 const City = styled.span`
   margin-bottom: 16px;
@@ -20,7 +25,7 @@ const Container = styled.div`
   align-items: center;
   justify-content: space-between;
 
-  font-size: 1.2rem;
+  font-size: 1.125rem;
   color: white;
   @media (min-width: 768px) {
     font-size: 2.5rem;
@@ -30,6 +35,38 @@ const Container = styled.div`
 const InformationContainer = styled.div`
   display: flex;
   flex-direction: column;
+`;
+
+const WeatherContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  // Please don't shoot me in the head for this
+  & > * {
+    margin-bottom: 10px;
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+`;
+
+const MaxMinTemperatures = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-size: 18px;
+
+  // I'm lazy, sorry
+  & > span:nth-child(1) {
+    margin-right: 4px;
+  }
+`;
+
+const Wind = styled.div`
+  display: flex;
+  flex-direction: row;
+  text-align: center;
+  font-size: 16px;
 `;
 
 interface WeatherTodayProps {
@@ -52,10 +89,19 @@ class WeatherToday extends React.Component<WeatherTodayProps, {}> {
     return (
       <Container>
         <InformationContainer>
-          <City>You are in {weather.title}</City>
+          <City>You are in&nbsp;{weather.title}</City>
           <Date dateTime={date.toUTCString()}>{format(date, "dddd, DD MMMM")}</Date>
         </InformationContainer>
-        <WeatherCurrentTemp />
+        <WeatherContainer>
+          <WeatherCurrentTemp />
+          <MaxMinTemperatures>
+            <WeatherMaxTemp weather={currentWeather} />
+            <WeatherMinTemp weather={currentWeather} />
+          </MaxMinTemperatures>
+          <Wind>
+            <WeatherWind weather={currentWeather} />
+          </Wind>
+        </WeatherContainer>
       </Container>
     );
   }
