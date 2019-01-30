@@ -1,7 +1,9 @@
 import * as React from "react";
-import { styled, theme } from "../theme";
 import { inject, observer } from "mobx-react";
 import { ThemeProvider } from "styled-components";
+import { Spring } from "react-spring";
+
+import { styled, theme } from "../theme";
 import WeatherStore from "../stores/WeatherStore";
 import WeatherCard from "./WeatherCard";
 
@@ -40,11 +42,15 @@ class WeatherTable extends React.Component<WeatherTableProps, {}> {
 
     return (
       <ThemeProvider theme={theme}>
-        <CardList>
-          {days.map((item: MWConsolidatedWeather) => {
-            return <WeatherCard key={item.applicable_date} weather={item} />;
-          })}
-        </CardList>
+        <Spring from={{ opacity: 0 }} to={{ opacity: 1 }}>
+          {spring => (
+            <CardList style={spring}>
+              {days.map((item: MWConsolidatedWeather) => {
+                return <WeatherCard key={item.applicable_date} weather={item} />;
+              })}
+            </CardList>
+          )}
+        </Spring>
       </ThemeProvider>
     );
   }
