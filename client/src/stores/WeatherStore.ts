@@ -27,7 +27,9 @@ class WeatherStore {
   @action.bound requestLocationAndWeather() {
     this.setLoading(true);
     this.setStatusText("Seeking you through space satellites");
-    navigator.geolocation.getCurrentPosition(this.updateUserLocationSuccess, this.updateUserLocationFailure);
+    navigator.geolocation.getCurrentPosition(this.updateUserLocationSuccess, this.updateUserLocationFailure, {
+      enableHighAccuracy: true,
+    });
   }
 
   @action.bound updateUserLocationSuccess(position: Position) {
