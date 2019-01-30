@@ -1,6 +1,6 @@
 import * as React from "react";
 import { inject, observer } from "mobx-react";
-import { parse, format } from "date-fns";
+import { format, parse } from "date-fns";
 
 import WeatherStore from "../stores/WeatherStore";
 import { styled } from "../theme";
@@ -10,8 +10,9 @@ import WeatherMaxTemp from "./WeatherMaxTemp";
 import WeatherMinTemp from "./WeatherMinTemp";
 import WeatherWind from "./WeatherWind";
 
-const City = styled.span`
-  margin-bottom: 16px;
+const City = styled.p`
+  margin-top: 0.5rem;
+  margin-bottom: 0.8rem;
 `;
 
 const Date = styled.time``;
@@ -22,7 +23,6 @@ const Container = styled.div`
 
   display: flex;
   flex-direction: row;
-  align-items: center;
   justify-content: space-between;
 
   font-size: 1.125rem;

@@ -1,6 +1,6 @@
 import * as React from "react";
-import { styled, Theme } from "../theme";
 import { ButtonHTMLAttributes } from "react";
+import { styled, Theme } from "../theme";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLElement> {
   onClick?: (e: React.SyntheticEvent) => void;
@@ -20,23 +20,24 @@ const StyledButton = styled.button`
 
   padding: 8px 12px;
   border-radius: 4px;
-  background-color: ${props => props.theme.color.secondaryColor};
-  border: ${props => `2px solid ${props.theme.color.secondaryColor}`};
-  color: ${props => props.theme.color.primaryColor};
+
+  background-color: ${props => props.theme.secondaryColor};
+  border: 2px solid transparent;
+  color: ${props => props.theme.primaryColor};
 
   &:hover {
-    border-color: ${props => props.theme.color.primaryColor};
-    color: ${props => props.theme.color.primaryColor};
+    background-color: ${props => props.theme.accentColor2};
+    border-color: ${props => props.theme.accentColor2};
+    color: ${props => props.theme.primaryColor};
   }
 
   &:active {
-    background-color: ${props => props.theme.color.accentColor};
-    border-color: ${props => props.theme.color.accentColor};
+    transform: scale(0.95);
   }
 
   &:disabled {
-    background-color: ${props => props.theme.color.fallbackColor};
-    border-color: ${props => props.theme.color.fallbackColor};
+    background-color: ${props => props.theme.fallbackColor};
+    border-color: ${props => props.theme.fallbackColor};
   }
 
   transition: 0.1s ease-in-out;

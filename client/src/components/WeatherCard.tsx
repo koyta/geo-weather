@@ -2,7 +2,6 @@ import * as React from "react";
 import { styled } from "../theme";
 import { format, parse } from "date-fns";
 import WeatherIcon from "./WeatherIcon";
-import { convertMphToKmh } from "../utils/functions";
 import WeatherMaxTemp from "./WeatherMaxTemp";
 import WeatherMinTemp from "./WeatherMinTemp";
 import WeatherWind from "./WeatherWind";
@@ -13,9 +12,11 @@ export const Card = styled.article`
   align-items: center;
   justify-content: space-around;
 
+  height: 80px;
   width: 100%;
 
-  background: #fafafa;
+  background: ${props => props.theme.primaryColor};
+  color: ${props => props.theme.secondaryColor};
 
   padding: 16px 12px;
   border-radius: 16px;

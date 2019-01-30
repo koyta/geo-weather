@@ -1,7 +1,9 @@
 import * as React from "react";
+import { inject, observer } from "mobx-react";
+import { config, Spring } from "react-spring";
+
 import { styled } from "../theme";
 import WeatherStore from "../stores/WeatherStore";
-import { inject, observer } from "mobx-react";
 
 interface WeatherCurrentTempProps {
   weatherStore?: WeatherStore;
@@ -20,9 +22,16 @@ const Temperature = styled.span`
 class WeatherCurrentTemp extends React.Component<WeatherCurrentTempProps, {}> {
   render() {
     const { weather } = this.props.weatherStore!;
+
     if (!weather) return null;
+
     const currentWeather = weather.consolidated_weather[0];
-    return <Temperature>{currentWeather.the_temp.toFixed(1)}&nbsp;°C</Temperature>;
+
+    return (
+      <Spring from={{ number: 0 }} to={{ number: +currentWeather.the_temp }} config={config.molasses}>
+        {spring => <Temperature>{spring.number.toFixed(1)}&nbsp;°C</Temperature>}
+      </Spring>
+    );
   }
 }
 
