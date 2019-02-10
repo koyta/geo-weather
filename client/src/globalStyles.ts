@@ -1,3 +1,6 @@
+import { createGlobalStyle } from "styled-components";
+
+export const GlobalStyle = createGlobalStyle`
 html,
 body {
   height: 100%;
@@ -37,3 +40,4 @@ code {
   background: linear-gradient(to bottom, cornflowerblue, rebeccapurple);
   overflow: auto;
 }
+`;
