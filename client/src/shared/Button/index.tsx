@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import { Theme } from "../../theme";
-import { StyledButton } from "../Button/StyledButton";
+import { StyledButton } from "./StyledButton";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLElement> {
   onClick?: (e: React.SyntheticEvent) => void;
