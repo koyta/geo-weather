@@ -1,11 +1,13 @@
 class MetaWeather {
+  root: string = "";
+
   constructor() {
     this.root = "https://www.metaweather.com/api";
   }
-  locationByLattLong(latt, long) {
+  locationByLattLong(latt: number, long: number) {
     return `${this.root}/location/search/?lattlong=${latt},${long}`;
   }
-  weatherByWoeid(woeid) {
+  weatherByWoeid(woeid: number) {
     return `${this.root}/location/${woeid}`;
   }
 }

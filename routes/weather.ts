@@ -1,8 +1,8 @@
 import express from "express";
-const router = express.Router();
-import axios from "axios";
-
+import axios, { AxiosResponse, AxiosError } from "axios";
 import MetaWeather from "../utils/MetaWeatherAPI";
+
+const router = express.Router();
 
 /* GET weather by latitude and longtitude. */
 router.get("", function(req, res) {
@@ -15,26 +15,26 @@ router.get("", function(req, res) {
 
   axios
     .get(MetaWeather.locationByLattLong(latt, long))
-    .then(response => {
+    .then((response: AxiosResponse) => {
       const { woeid } = response.data[0];
       return Promise.resolve(woeid);
     })
-    .then(woeid => {
+    .then((woeid: number) => {
       axios
         .get(MetaWeather.weatherByWoeid(woeid))
         .then(response => {
           res.send(response.data);
         })
-        .catch(e => {
+        .catch((e: AxiosError) => {
           console.error(e);
           res.sendStatus(500);
           return Promise.reject(e);
         });
     })
-    .catch(e => {
+    .catch((e: AxiosError) => {
       console.error(e);
       res.sendStatus(500);
     });
 });
 
-module.exports = router;
+export default router;
