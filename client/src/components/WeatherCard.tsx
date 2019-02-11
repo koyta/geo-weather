@@ -1,7 +1,7 @@
 import * as React from "react";
 import { styled } from "../theme";
 import { format, parse } from "date-fns";
-import WeatherIcon from "./WeatherIcon";
+import WeatherIcon from "../shared/WeatherIcon";
 import WeatherMaxTemp from "./WeatherMaxTemp";
 import WeatherMinTemp from "./WeatherMinTemp";
 import WeatherWind from "./WeatherWind";

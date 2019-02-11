@@ -1,68 +1,75 @@
-import { action, configure, observable, runInAction } from "mobx";
-import axios from "axios";
+import { action, configure, observable } from "mobx";
+import axios, { AxiosError } from "axios";
 
 configure({
   enforceActions: "observed",
 });
 
+type WeatherStoreStatus = "LOOKUP" | "SUCCESS" | "FAILED" | "FETCH" | "";
+
 class WeatherStore {
   @observable public weather: MWLocationWeather | null;
   @observable loading: boolean;
-  @observable statusText: string;
+  @observable status: WeatherStoreStatus;
 
   constructor() {
     this.weather = null;
     this.loading = false;
-    this.statusText = "";
+    this.status = "";
   }
 
   @action.bound setLoading(value: boolean) {
     this.loading = value;
   }
 
-  @action.bound setStatusText(value: string) {
-    this.statusText = value;
+  @action.bound setStatus(value: WeatherStoreStatus) {
+    this.status = value;
+  }
+
+  @action.bound setWeather(value: MWLocationWeather) {
+    this.weather = value;
   }
 
   @action.bound requestLocationAndWeather() {
     this.setLoading(true);
-    this.setStatusText("Seeking you through space satellites");
+    this.setStatus("LOOKUP"); //Seeking you through space satellites
     navigator.geolocation.getCurrentPosition(this.updateUserLocationSuccess, this.updateUserLocationFailure, {
       enableHighAccuracy: true,
     });
   }
 
   @action.bound updateUserLocationSuccess(position: Position) {
-    this.setStatusText("Predicting weather conditions");
-    this.getWeather(position.coords.latitude, position.coords.longitude).then(() => {
-      this.setLoading(false);
-      this.setStatusText("");
-    });
+    this.setStatus("FETCH"); //Predicting weather conditions
+    this.getWeather(position.coords.latitude, position.coords.longitude)
+      .then(() => {
+        this.setStatus("SUCCESS");
+      })
+      .catch(() => {
+        this.setStatus("FAILED");
+      })
+      .finally(() => {
+        this.setLoading(false);
+      });
   }
 
   @action.bound updateUserLocationFailure(error: PositionError) {
     alert(error.message);
-    this.setStatusText("We can't find you, sorry 😒");
+    this.setStatus("FAILED"); //We can't find you, sorry 😒
   }
 
-  @action.bound getWeather(latt: number, long: number): Promise<object> {
+  @action getWeather = async (latt: number, long: number): Promise<{} | AxiosError> => {
     const url = "/weather";
     const config = { params: { latt, long } };
 
-    return axios
-      .get(url, config)
-      .then(response => {
-        const weather: MWLocationWeather = response.data;
-        runInAction(() => {
-          this.weather = weather;
-        });
-        return Promise.resolve({});
-      })
-      .catch(error => {
-        console.error(error);
-        return Promise.reject(error);
-      });
-  }
+    try {
+      const response = await axios.get(url, config);
+      const { data } = response;
+      this.setWeather(data);
+      return Promise.resolve({});
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  };
 }
 
 export default WeatherStore;

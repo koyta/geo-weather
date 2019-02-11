@@ -3,12 +3,12 @@ import { inject, observer } from "mobx-react";
 import { ThemeProvider } from "styled-components";
 import { styled, theme } from "./theme";
 
-import Button from "./components/Button";
-import WeatherTable from "./components/WeatherTable";
+import Button from "./shared/Button";
+import WeatherList from "./components/WeatherList";
 import WeatherToday from "./components/WeatherToday";
 
 import WeatherStore from "./stores/WeatherStore";
-import Loading from "./components/Loading";
+import Loading from "./shared/Loading";
 
 interface AppProps {
   weatherStore?: WeatherStore;
@@ -61,20 +61,34 @@ class App extends Component<AppProps, {}> {
     this.props.weatherStore!.requestLocationAndWeather();
   };
 
+  getStatusText = () => {
+    const { status } = this.props.weatherStore!;
+    switch (status) {
+      case "LOOKUP":
+        return "Seeking you through space satellites";
+      case "SUCCESS":
+        return "";
+      case "FETCH":
+        return "Predicting weather conditions";
+      case "FAILED":
+        return "We can't find you, sorry 😒";
+    }
+  };
+
   render() {
-    const { weather, loading, statusText } = this.props.weatherStore!;
+    const { weather, loading, status } = this.props.weatherStore!;
     return (
       <ThemeProvider theme={theme}>
         <AppContainer>
           {weather ? (
             <>
               <WeatherToday />
-              <WeatherTable />
+              <WeatherList />
             </>
           ) : (
             <GetWeatherContainer>
               {loading && <Loading />}
-              <StatusText>{statusText}</StatusText>
+              <StatusText>{this.getStatusText()}</StatusText>
               <Button label="Получить прогноз погоды" onClick={this.showWeather} disabled={loading} />
             </GetWeatherContainer>
           )}
